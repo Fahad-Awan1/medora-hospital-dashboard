@@ -1639,7 +1639,7 @@ function caseStudyModal() {
     <img class="m-banner" src="img/scenes/ward.jpg" alt="Hospital ward" />
     <span class="cs-eyebrow"><svg><use href="#i-lock"/></svg>PORTFOLIO CASE STUDY</span>
     <h3>Medora — Hospital Management Dashboard</h3>
-    <p class="m-sub">Designed and developed by Malik Fahad Awan for a private healthcare client.
+    <p class="m-sub">Designed and developed by Muhammad Fahad Riaz for a private healthcare client.
       The client's name and real data are confidential, so this public version runs on dummy data.
       The design, screens and interactions match the product delivered to the client.</p>
     <div class="cs-grid">

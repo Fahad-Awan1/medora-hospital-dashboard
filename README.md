@@ -1,6 +1,6 @@
 # Medora — Hospital Management Dashboard
 
-An interactive hospital management dashboard, designed and developed by **Malik Fahad Awan**.
+An interactive hospital management dashboard, designed and developed by **Muhammad Fahad Riaz**.
 
 > **Portfolio case study.** This dashboard was built for a private healthcare client. The client's name and real data are confidential, so this public version runs entirely on **dummy data**. The design, screens and interactions match the product delivered to the client.
 
