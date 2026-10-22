@@ -465,6 +465,11 @@ function renderLine() {
   const d = TREND[state.aRange];
   const adm = d.adm.map(v => Math.round(v * pf()));
   const dis = d.dis.map(v => Math.round(v * pf()));
+  // Size the drawing to the card so text stays readable on phones (desktop keeps the 640-wide layout)
+  const cw = svg.getBoundingClientRect().width;
+  LC.W = cw ? Math.round(Math.min(640, Math.max(300, cw))) : 640;
+  LC.H = LC.W < 480 ? 210 : 230;
+  svg.setAttribute('viewBox', `0 0 ${LC.W} ${LC.H}`);
   const { W, H, l, r, t, b } = LC;
   const maxY = Math.ceil((Math.max(...adm, ...dis) * 1.15) / 100) * 100;
   const x = i => l + (i * (W - l - r)) / (adm.length - 1);
@@ -477,7 +482,7 @@ function renderLine() {
     const v = (maxY / 4) * k, yy = y(v);
     grid += `<line class="grid" x1="${l}" x2="${W - r}" y1="${yy}" y2="${yy}"/><text x="${l - 8}" y="${yy + 3}" text-anchor="end">${fmtK(v)}</text>`;
   }
-  const xl = d.labels.map((m, i) => `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${m}</text>`).join('');
+  const xl = d.labels.map((m, i) => W < 480 && i % 2 ? '' : `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${m}</text>`).join('');
   svg.innerHTML = `
     <defs><clipPath id="lcClip"><rect class="clip-rect" x="${l}" y="0" width="${W - l - r + 8}" height="${H}"/></clipPath></defs>
     ${grid}${xl}
@@ -615,12 +620,12 @@ function renderInvoices() {
     (!q || `${inv.id} ${inv.patient} ${inv.dept}`.toLowerCase().includes(q)));
   $('#invBody').innerHTML = rows.length ? rows.map((inv, i) => `
     <tr class="click" data-inv="${inv.id}" style="--rd:${i * 40}ms">
-      <td><b>${inv.id}</b></td>
-      <td><span class="who">${face(inv.patient)}${inv.patient}</span></td>
-      <td>${inv.dept}</td>
-      <td>${inv.date}</td>
-      <td class="r">${money(inv.amount)}</td>
-      <td><span class="st ${STATUS_CLASS[inv.status]}">${inv.status}</span></td>
+      <td class="c-id"><b>${inv.id}</b></td>
+      <td class="c-who"><span class="who">${face(inv.patient)}${inv.patient}</span></td>
+      <td class="c-dept">${inv.dept}</td>
+      <td class="c-date">${inv.date}</td>
+      <td class="r c-amt">${money(inv.amount)}</td>
+      <td class="c-st"><span class="st ${STATUS_CLASS[inv.status]}">${inv.status}</span></td>
     </tr>`).join('') : `<tr class="empty"><td colspan="6">No invoices match your filter</td></tr>`;
 }
 
@@ -712,12 +717,12 @@ function renderInventory() {
     const pct = Math.min(100, (m.stock / (m.reorder * 3)) * 100);
     const color = st === 'Critical' ? '#ef4444' : st === 'Low' ? '#f59e0b' : '#1e6bff';
     return `<tr class="click" data-med="${m.name}" style="--rd:${i * 40}ms">
-      <td><b>${m.name}</b><span class="sub">${m.form} · ${m.supplier}</span></td>
-      <td>${m.cat}</td>
-      <td><div class="meter"><i style="background:${color}" data-w="${pct}"></i></div><span class="sub">${fmt(m.stock)} / min ${fmt(m.reorder)}</span></td>
-      <td>${m.expiry}</td>
-      <td><span class="st ${MED_CLASS[st]}">${st}</span></td>
-      <td class="r">${st === 'Low' || st === 'Critical' ? `<button class="mini-btn" data-reorder="${m.name}">Reorder</button>` : ''}</td>
+      <td class="c-name"><b>${m.name}</b><span class="sub">${m.form} · ${m.supplier}</span></td>
+      <td class="c-cat">${m.cat}</td>
+      <td class="c-stock"><div class="meter"><i style="background:${color}" data-w="${pct}"></i></div><span class="sub">${fmt(m.stock)} / min ${fmt(m.reorder)}</span></td>
+      <td class="c-exp">${m.expiry}</td>
+      <td class="c-st"><span class="st ${MED_CLASS[st]}">${st}</span></td>
+      <td class="r c-act">${st === 'Low' || st === 'Critical' ? `<button class="mini-btn" data-reorder="${m.name}">Reorder</button>` : ''}</td>
     </tr>`;
   }).join('') : `<tr class="empty"><td colspan="6">No medicines match your filter</td></tr>`;
   later(() => $$('#medBody .meter i').forEach(i => (i.style.width = i.dataset.w + '%')), 100);
@@ -862,7 +867,10 @@ function renderWeek() {
   const opt = { month: 'short', day: 'numeric' };
   $('#weekLabel').textContent = `${days[0].toLocaleDateString('en-US', opt)} – ${days[5].toLocaleDateString('en-US', opt)}, ${days[5].getFullYear()}`;
 
-  let head = '<span></span>', cols = '';
+  // Phones show one day: the selected day, else today if it is in this week, else Monday
+  const selIdx = days.findIndex(d => sameDay(d, state.selDate));
+  const focus = selIdx >= 0 ? selIdx : Math.max(0, days.findIndex(d => sameDay(d, TODAY)));
+  let head = '<span class="corner"></span>', cols = '';
   let times = '<div class="times">';
   for (let h = 8; h <= 17; h++) times += `<span style="top:${(h - 8) * HOUR_PX}px">${fmtTime(h)}</span>`;
   times += '</div>';
@@ -871,7 +879,8 @@ function renderWeek() {
   let total = 0, surgeries = 0, done = 0, ai = 0;
   days.forEach(d => {
     const isToday = sameDay(d, TODAY);
-    head += `<div class="dh ${isToday ? 'today' : ''} ${sameDay(d, state.selDate) ? 'sel' : ''}">${d.toLocaleDateString('en-US', { weekday: 'short' })}<b>${d.getDate()}</b></div>`;
+    const fi = days.indexOf(d) === focus ? 'focus' : '';
+    head += `<div class="dh ${isToday ? 'today' : ''} ${sameDay(d, state.selDate) ? 'sel' : ''} ${fi}">${d.toLocaleDateString('en-US', { weekday: 'short' })}<b>${d.getDate()}</b></div>`;
     let blocks = '';
     apptsFor(d).forEach(a => {
       state.weekAppts[a.id] = a;
@@ -888,9 +897,10 @@ function renderWeek() {
       const now = new Date(), h = now.getHours() + now.getMinutes() / 60;
       if (h >= 8 && h <= 17) blocks += `<span class="now-line" style="top:${(h - 8) * HOUR_PX}px"></span>`;
     }
-    cols += `<div class="day ${isToday ? 'today' : ''}">${blocks}</div>`;
+    cols += `<div class="day ${isToday ? 'today' : ''} ${fi}">${blocks}</div>`;
   });
   $('#sched').innerHTML = head + times + cols;
+  $('#dayStrip').innerHTML = days.map((d, i) => `<button class="${i === focus ? 'on' : ''} ${sameDay(d, TODAY) ? 'today' : ''}" data-date="${ymd(d)}">${d.toLocaleDateString('en-US', { weekday: 'short' })}<b>${d.getDate()}</b></button>`).join('');
   $('#schedStats').innerHTML = `
     <span><b>${total}</b>Appointments</span>
     <span><b>${surgeries}</b>Surgeries</span>
@@ -1034,6 +1044,21 @@ $('.sidebar').addEventListener('click', e => {
   item.classList.add('active');
   if (item.dataset.go) showScreen(item.dataset.go);
   else if (item.closest('#deptList')) deptModal(item.textContent.trim());
+  setDrawer(false);
+});
+
+function setDrawer(open) {
+  document.body.classList.toggle('drawer-open', open);
+  $('#menuBtn').setAttribute('aria-expanded', open);
+}
+$('#menuBtn').addEventListener('click', () => setDrawer(!document.body.classList.contains('drawer-open')));
+$('#drawerScrim').addEventListener('click', () => setDrawer(false));
+$('#promoCard').addEventListener('click', () => setDrawer(false));
+$('#dayStrip').addEventListener('click', e => {
+  const b = e.target.closest('[data-date]');
+  if (!b) return;
+  const [y, m, d] = b.dataset.date.split('-').map(Number);
+  selectDate(new Date(y, m - 1, d));
 });
 
 const EXTRA_DEPTS = ['Radiology', 'Oncology', 'Orthopedics', 'Maternity'];
@@ -1185,7 +1210,9 @@ document.addEventListener('click', e => {
   if (exp) return expand(exp.dataset.expand);
   if (!e.target.closest('#dropdown') && !e.target.closest('#bellBtn, #settingsBtn, #profileBtn')) closeMenu();
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMenu(); closeModal(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMenu(); closeModal(); setDrawer(false); } });
+let resizeT;
+window.addEventListener('resize', () => { clearTimeout(resizeT); resizeT = setTimeout(() => { if (state.screen === 'analytics') renderLine(); }, 200); });
 window.addEventListener('resize', () => { closeMenu(); moveIndicator($('.tab.active')); positionDashLine(); });
 
 $('#settingsBtn').addEventListener('click', e => openNamedMenu(e.currentTarget, 'settings'));

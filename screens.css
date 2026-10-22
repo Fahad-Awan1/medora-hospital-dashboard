@@ -300,7 +300,8 @@
 }
 @media (max-width: 520px) {
   .kpi-row { grid-template-columns: 1fr; }
-  .pay-list, .form-grid, .kv { grid-template-columns: 1fr; }
+  .pay-list, .form-grid { grid-template-columns: 1fr; }
+  .kv b { word-break: break-word; }
   .search input, .search input:focus { width: 110px; }
   .card-head { flex-wrap: wrap; }
 }
@@ -400,3 +401,105 @@
 .card-shade { position: absolute; inset: 0; z-index: 0; background: linear-gradient(90deg, rgba(17,18,22,.97) 0%, rgba(17,18,22,.85) 42%, rgba(17,18,22,.3) 100%); }
 .card-shade.dense { background: linear-gradient(180deg, rgba(27,28,33,.8) 0%, rgba(27,28,33,.96) 55%); }
 .expiry > :not(.card-bg):not(.card-shade) { position: relative; z-index: 1; }
+
+/* ==========================================================
+   Responsive: drawer sidebar (tablet + phone), bottom nav (phone)
+   ========================================================== */
+.menu-btn, .tab svg, .day-strip, .drawer-scrim { display: none; }
+
+@media (max-width: 1024px) {
+  .menu-btn { display: grid; }
+  .topbar { flex-wrap: wrap; gap: 12px; }
+  .tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); }
+  .tab { text-align: center; }
+
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 90; width: min(300px, 86vw);
+    display: flex; flex-direction: column; align-items: stretch; gap: 22px; padding: 22px 18px 18px;
+    background: var(--app); overflow-y: auto; transform: translateX(-105%);
+    transition: transform .4s var(--ease); box-shadow: 24px 0 50px -24px rgba(15,23,42,.45);
+  }
+  body.drawer-open { overflow: hidden; }
+  body.drawer-open .sidebar { transform: none; }
+  .drawer-scrim { display: block; position: fixed; inset: 0; z-index: 89; background: rgba(15,17,22,.42); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity .3s; }
+  body.drawer-open .drawer-scrim { opacity: 1; pointer-events: auto; }
+  .promo { margin-top: auto; min-height: 150px; flex-shrink: 0; }
+}
+
+@media (max-width: 640px) {
+  .app { padding: 14px 14px 12px; }
+  .topbar { flex-wrap: nowrap; gap: 10px; margin-bottom: 18px; }
+  .brand-text { font-size: 15px; }
+
+  /* Bottom navigation */
+  .tabs {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 75; width: auto; gap: 2px; overflow: visible;
+    padding: 6px 8px calc(8px + env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0;
+    background: rgba(255,255,255,.97); backdrop-filter: blur(12px); box-shadow: 0 -10px 30px -14px rgba(16,24,40,.3);
+  }
+  .tabs .tab { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 0 6px; font-size: 10px; font-weight: 500; color: var(--muted); border-radius: 14px; transition: color .25s, background .25s; }
+  .tab svg { display: block; width: 20px; height: 20px; }
+  .tabs .tab.active { color: var(--blue); background: #eef3ff; }
+  .tab-indicator { display: none; }
+  .credit { padding: 4px 16px 96px; }
+  .toasts { left: 12px; right: 12px; bottom: 92px; align-items: center; }
+
+  .main-head { gap: 12px; }
+  .main-head .head-actions { flex-wrap: wrap; }
+  .card-head { flex-wrap: wrap; }
+  .card-head .search { flex: 1 1 180px; }
+  .search input, .search input:focus { width: 100%; }
+
+  /* Invoice + medicine tables become stacked cards */
+  .tbl-cards, .tbl-cards tbody { display: block; }
+  .tbl-cards thead { display: none; }
+  .tbl-cards tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; align-items: center; padding: 12px 6px; border-bottom: 1px solid var(--line); }
+  .tbl-cards tbody tr:last-child { border-bottom: 0; }
+  .tbl-cards tbody tr.empty { display: block; }
+  .tbl-cards td { padding: 0; border: 0; white-space: normal; min-width: 0; }
+  .tbl-cards .c-who, .tbl-cards .c-name { grid-column: 1; grid-row: 1; }
+  .tbl-cards .c-amt { grid-column: 2; grid-row: 1; font-weight: 600; }
+  .tbl-cards .c-dept { grid-column: 1; grid-row: 2; font-size: 11px; color: var(--muted); }
+  .tbl-cards .c-st { grid-column: 2; grid-row: 2; justify-self: end; }
+  .tbl-cards .c-id, .tbl-cards .c-cat { grid-column: 1; grid-row: 3; font-size: 10.5px; color: var(--muted); }
+  .tbl-cards .c-date, .tbl-cards .c-exp { grid-column: 2; grid-row: 3; font-size: 10.5px; color: var(--muted); text-align: right; }
+  #medBody .c-st { grid-row: 1; }
+  #medBody .c-stock { grid-column: 1; grid-row: 2; }
+  #medBody .c-stock .meter { width: 100%; }
+  #medBody .c-act { grid-column: 2; grid-row: 2; justify-self: end; }
+
+  /* Schedule: one day at a time with a day picker */
+  .day-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 12px; }
+  .day-strip button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0; border-radius: 12px; background: var(--app); font-size: 9.5px; color: var(--muted); transition: background .2s, color .2s; }
+  .day-strip b { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .day-strip button.today b { color: var(--blue); }
+  .day-strip button.on { background: var(--ink); color: #c9ccd4; }
+  .day-strip button.on b { color: #fff; }
+  .sched { grid-template-columns: 44px minmax(0, 1fr); min-width: 0; }
+  .sched .dh, .sched .corner { display: none; }
+  .sched .day:not(.focus) { display: none; }
+  .sched-stats { display: grid; grid-template-columns: 1fr 1fr; }
+
+  /* Popups */
+  .modal-card { padding: 20px; border-radius: 20px; }
+  .m-banner { width: calc(100% + 40px); margin: -20px -20px 16px; height: 130px; border-radius: 20px 20px 0 0; }
+}
+
+/* Phone polish */
+.sched-wrap { padding-top: 8px; }
+@media (max-width: 640px) {
+  .main-head > div:first-child { width: 100%; }
+  .main-head .head-actions { display: grid; grid-template-columns: 1.35fr 1fr 1fr; width: 100%; }
+  .main-head .head-actions .circle { display: none; }
+  .main-head .head-actions .pill { justify-content: center; }
+  .kpi-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .kpi { padding: 14px; gap: 8px; }
+  .kpi .val { font-size: 20px; }
+  .kpi .label { font-size: 10.5px; }
+  .kpi-ic { width: 26px; height: 26px; }
+  .kpi .spark svg { width: 52px; height: 22px; }
+  .line-chart text { font-size: 10px; }
+}
+@media (max-width: 340px) {
+  .kpi-row { grid-template-columns: 1fr; }
+}

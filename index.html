@@ -63,6 +63,9 @@
       <stop offset="0" stop-color="#1e6bff" stop-opacity=".28"/><stop offset="1" stop-color="#1e6bff" stop-opacity="0"/>
     </linearGradient>
     <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M16 14h.01"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
     <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
     <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
@@ -88,6 +91,7 @@
 
   <!-- ===== Top bar ===== -->
   <header class="topbar reveal" style="--d:0">
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
     <a class="brand" href="#dashboard" aria-label="Medora home">
       <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
         <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#logoGrad)"/>
@@ -99,11 +103,11 @@
 
     <nav class="tabs" id="tabs">
       <span class="tab-indicator" id="tabIndicator"></span>
-      <button class="tab active" data-screen="dashboard">Dashboard</button>
-      <button class="tab" data-screen="analytics">Analytics</button>
-      <button class="tab" data-screen="billing">Billing</button>
-      <button class="tab" data-screen="pharmacy">Pharmacy</button>
-      <button class="tab" data-screen="calendar">Calendar</button>
+      <button class="tab active" data-screen="dashboard"><svg><use href="#i-home"/></svg><span>Dashboard</span></button>
+      <button class="tab" data-screen="analytics"><svg><use href="#i-activity"/></svg><span>Analytics</span></button>
+      <button class="tab" data-screen="billing"><svg><use href="#i-wallet"/></svg><span>Billing</span></button>
+      <button class="tab" data-screen="pharmacy"><svg><use href="#i-pill"/></svg><span>Pharmacy</span></button>
+      <button class="tab" data-screen="calendar"><svg><use href="#i-calendar"/></svg><span>Calendar</span></button>
     </nav>
 
     <div class="top-actions">
@@ -407,7 +411,7 @@
               <label class="search"><svg><use href="#i-search"/></svg><input id="invSearch" placeholder="Search patient or invoice" /></label>
             </div>
             <div class="tbl-wrap">
-              <table class="tbl">
+              <table class="tbl tbl-cards">
                 <thead><tr><th>Invoice</th><th>Patient</th><th>Department</th><th>Date</th><th class="r">Amount</th><th>Status</th></tr></thead>
                 <tbody id="invBody"></tbody>
               </table>
@@ -479,7 +483,7 @@
               <label class="search"><svg><use href="#i-search"/></svg><input id="medSearch" placeholder="Search medicine" /></label>
             </div>
             <div class="tbl-wrap">
-              <table class="tbl">
+              <table class="tbl tbl-cards">
                 <thead><tr><th>Medicine</th><th>Category</th><th>Stock</th><th>Expiry</th><th>Status</th><th></th></tr></thead>
                 <tbody id="medBody"></tbody>
               </table>
@@ -534,6 +538,7 @@
               </div>
             </div>
             <div class="sched-stats" id="schedStats"></div>
+            <div class="day-strip" id="dayStrip"></div>
             <div class="sched-wrap"><div class="sched" id="sched"></div></div>
             <ul class="legend sched-legend">
               <li><i class="b2"></i>Consultation</li><li><i class="b0"></i>Surgery</li>
@@ -551,6 +556,7 @@
 </footer>
 
 <!-- Floating layers -->
+<div class="drawer-scrim" id="drawerScrim"></div>
 <div class="dropdown" id="dropdown" role="menu"></div>
 <div class="tooltip" id="tooltip"></div>
 <div class="toasts" id="toasts"></div>
