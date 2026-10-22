@@ -24,11 +24,13 @@
 html, body { min-height: 100%; }
 body {
   font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-  background: radial-gradient(1200px 600px at 10% -10%, #eef1f6, transparent), var(--page);
+  background: var(--app);
   color: var(--ink);
   font-size: 13px;
   -webkit-font-smoothing: antialiased;
-  padding: 28px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
@@ -40,12 +42,10 @@ ul { list-style: none; }
 
 /* ===== App shell ===== */
 .app {
-  max-width: 1320px;
-  margin: 0 auto;
+  flex: 1;
+  width: 100%;
   background: var(--app);
-  border-radius: 26px;
-  padding: 22px 26px 26px;
-  box-shadow: 0 30px 80px -30px rgba(15, 23, 42, .35), 0 0 0 1px rgba(255,255,255,.6) inset;
+  padding: 22px 28px 20px;
 }
 
 /* Entry animation */

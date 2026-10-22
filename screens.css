@@ -316,8 +316,8 @@
 
 /* ===== Portfolio case-study notice ===== */
 .case-bar {
-  max-width: 1320px; margin: 0 auto 14px; display: flex; align-items: center; gap: 12px;
-  padding: 10px 12px 10px 14px; border-radius: 16px; background: var(--black); color: #d5d8df; font-size: 12px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 28px; background: var(--black); color: #d5d8df; font-size: 12px;
   box-shadow: 0 12px 30px -16px rgba(15,23,42,.6); animation: rise .7s var(--ease) both;
 }
 .case-bar p { flex: 1; line-height: 1.45; }
@@ -331,7 +331,7 @@
 .cb-x svg { width: 13px; height: 13px; }
 .case-bar.gone { animation: shrinkOut .35s var(--ease) forwards; }
 .demo-chip { margin-left: 4px; font-size: 9.5px; font-weight: 600; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 999px; }
-.credit { max-width: 1320px; margin: 16px auto 0; text-align: center; font-size: 11px; color: #7d828d; }
+.credit { padding: 0 28px 18px; text-align: center; font-size: 11px; color: #7d828d; }
 .credit b { color: var(--ink-2); font-weight: 600; }
 
 /* Case-study modal */
@@ -352,3 +352,20 @@
   .cs-grid { grid-template-columns: 1fr; }
 }
 @media print { .case-bar { display: none; } }
+
+/* ===== Full-screen fill on desktop: content stretches to the viewport height ===== */
+@media (min-width: 1025px) and (min-height: 700px) {
+  .app { display: flex; flex-direction: column; }
+  .layout { flex: 1; }
+  .screen.active { flex: 1; }
+  .screen[data-screen="dashboard"] .row1 { flex: 1; }
+  .screen[data-screen="dashboard"] .row2 { flex: 1.15; }
+  .admissions, .sources, .occupancy { display: flex; flex-direction: column; }
+  .admissions .dots { flex: 1; align-content: space-evenly; }
+  .dot { max-width: 34px; }
+  .sources .sources-body { flex: 1; }
+  .sources .chart { height: auto; min-height: 196px; }
+  .occupancy .gauge-wrap { margin: auto; max-width: 260px; }
+  .occupancy .occ-foot { margin-top: 0; }
+  .screen[data-screen="calendar"] .cal-layout { flex: 1; }
+}
