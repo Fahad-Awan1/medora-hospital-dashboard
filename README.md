@@ -26,6 +26,14 @@ An interactive hospital management dashboard, designed and developed by **Malik 
 
 Plain HTML, CSS and JavaScript — no framework and no build step.
 
+## Photos
+
+All photos are from [Unsplash](https://unsplash.com) under the free Unsplash License and are self-hosted in `img/`. The people shown come from stock photos; they are not the client's patients or staff.
+
+Doctors: Fotos (@fotospk), mohamad azaam (@mreke88), vaibhav vivian (@vrahim11), Jonathan Borba (@jonathanborba).
+Patients: Rejaul Karim, Assad Tanoli, Muneeb Malhotra, Kamran Ch, Danie Franco, Jamshaid Mughal, Mufid Majnun, Abdullah Inam.
+Hospital and pharmacy: Irshad Pathan (@alrighthospital), Tasha Kostyuk, Ani Kolleshi, David Trinks (@dtrinksrph).
+
 ## Run locally
 
 Open `index.html` in a browser.

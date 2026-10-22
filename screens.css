@@ -369,3 +369,34 @@
   .occupancy .occ-foot { margin-top: 0; }
   .screen[data-screen="calendar"] .cal-layout { flex: 1; }
 }
+
+/* ===== Real photos ===== */
+.ph { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #e9ebef; box-shadow: 0 0 0 2px #fff; }
+.ph.md, .ini.md { width: 34px; height: 34px; }
+.ph.lg { width: 46px; height: 46px; }
+.ph.xl { width: 64px; height: 64px; box-shadow: 0 0 0 3px #fff, 0 10px 22px -10px rgba(16,24,40,.45); }
+.ph.center-ph { display: block; margin: 4px auto 14px; }
+.avatar { display: block; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s var(--ease); }
+.profile:hover .avatar img { transform: scale(1.08); }
+.kv b.who { display: flex; align-items: center; gap: 8px; }
+.m-head { gap: 12px; margin-bottom: 4px; }
+.m-head h3 { margin: 0; }
+.m-head .m-sub { margin-bottom: 0; }
+.m-banner { display: block; width: calc(100% + 48px); max-width: none; height: 150px; margin: -24px -24px 18px; object-fit: cover; border-radius: 22px 22px 0 0; }
+
+/* Promo card: doctor photo, toned to the card's blue */
+.promo-photo {
+  position: absolute; right: 0; bottom: 0; width: 66%; height: 100%; object-fit: cover; object-position: center 18%;
+  filter: grayscale(1) contrast(1.08) brightness(1.08); mix-blend-mode: luminosity; opacity: .95;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%); mask-image: linear-gradient(90deg, transparent 0, #000 45%);
+  transition: transform .8s var(--ease);
+}
+.promo:hover .promo-photo { transform: scale(1.06); }
+
+/* Photo backgrounds on dark cards */
+.card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: transform 1.2s var(--ease); }
+.card:hover .card-bg { transform: scale(1.06); }
+.card-shade { position: absolute; inset: 0; z-index: 0; background: linear-gradient(90deg, rgba(17,18,22,.97) 0%, rgba(17,18,22,.85) 42%, rgba(17,18,22,.3) 100%); }
+.card-shade.dense { background: linear-gradient(180deg, rgba(27,28,33,.8) 0%, rgba(27,28,33,.96) 55%); }
+.expiry > :not(.card-bg):not(.card-shade) { position: relative; z-index: 1; }

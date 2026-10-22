@@ -18,6 +18,26 @@ const initials = n => n.replace(/^Dr\.\s*/, '').split(' ').map(w => w[0]).slice(
 const PALETTE = ['#1e6bff', '#173a9e', '#1b1c21', '#4f8dff', '#0ea5e9', '#6366f1'];
 const colorFor = s => PALETTE[[...s].reduce((a, c) => a + c.charCodeAt(0), 0) % PALETTE.length];
 
+// Real photos (Unsplash, self-hosted in img/) for doctors and billed patients; anyone else gets initials
+const PHOTOS = {
+  'Dr. Hira Malik': 'img/doctors/hira-malik.jpg',
+  'Dr. Ahmed Raza': 'img/doctors/ahmed-raza.jpg',
+  'Dr. Ayesha Noor': 'img/doctors/ayesha-noor.jpg',
+  'Dr. Imran Shah': 'img/doctors/imran-shah.jpg',
+  'Dr. Fatima Zahid': 'img/doctors/fatima-zahid.jpg',
+  'Ayesha Khan': 'img/patients/ayesha-khan.jpg',
+  'Bilal Ahmed': 'img/patients/bilal-ahmed.jpg',
+  'Sara Iqbal': 'img/patients/sara-iqbal.jpg',
+  'Usman Tariq': 'img/patients/usman-tariq.jpg',
+  'Hina Raza': 'img/patients/hina-raza.jpg',
+  'Umar Farooq': 'img/patients/umar-farooq.jpg',
+  'Zainab Ali': 'img/patients/zainab-ali.jpg',
+  'Faisal Mehmood': 'img/patients/faisal-mehmood.jpg',
+};
+const face = (name, cls = '') => PHOTOS[name]
+  ? `<img class="ph ${cls}" src="${PHOTOS[name]}" alt="${name}" loading="lazy" />`
+  : `<span class="ini ${cls}" style="background:${colorFor(name)}">${initials(name)}</span>`;
+
 function countUp(el, to, { prefix = '', suffix = '', decimals = 0, dur = 1200, format, from } = {}) {
   if (!el) return;
   const start0 = from ?? el._val ?? 0;
@@ -217,7 +237,7 @@ const APPT_TYPES = { consultation: 'Consultation', checkup: 'Check-up', followup
 const NOTIFS = [
   { icon: 'i-heart', bg: '#fee2e2', fg: '#ef4444', t: 'Code Blue — Ward 4B', s: 'Response team dispatched · 2 min ago', go: 'dashboard', unread: true },
   { icon: 'i-file', bg: '#dbeafe', fg: '#1e6bff', t: 'Lab results ready', s: '14 new results for review · 18 min ago', go: 'analytics', unread: true },
-  { icon: 'i-user', bg: '#dcfce7', fg: '#16a34a', t: 'Dr. Ahmed checked in', s: 'Neurology shift started · 1 h ago', go: 'calendar', unread: true },
+  { icon: 'i-user', bg: '#dcfce7', fg: '#16a34a', photo: 'Dr. Ahmed Raza', t: 'Dr. Ahmed checked in', s: 'Neurology shift started · 1 h ago', go: 'calendar', unread: true },
 ];
 
 /* ---------- State ---------- */
@@ -596,7 +616,7 @@ function renderInvoices() {
   $('#invBody').innerHTML = rows.length ? rows.map((inv, i) => `
     <tr class="click" data-inv="${inv.id}" style="--rd:${i * 40}ms">
       <td><b>${inv.id}</b></td>
-      <td><span class="who"><span class="ini" style="background:${colorFor(inv.patient)}">${initials(inv.patient)}</span>${inv.patient}</span></td>
+      <td><span class="who">${face(inv.patient)}${inv.patient}</span></td>
       <td>${inv.dept}</td>
       <td>${inv.date}</td>
       <td class="r">${money(inv.amount)}</td>
@@ -618,8 +638,7 @@ $('#invBody').addEventListener('click', e => {
 function invoiceModal(id) {
   const inv = state.invoices.find(i => i.id === id);
   openModal(`
-    <h3>${inv.id}</h3>
-    <p class="m-sub">Invoice for ${inv.patient}</p>
+    <div class="who m-head">${face(inv.patient, "lg")}<div><h3>${inv.id}</h3><p class="m-sub">Invoice for ${inv.patient}</p></div></div>
     <div class="kv">
       <div><small>Patient</small><b>${inv.patient}</b></div>
       <div><small>Department</small><b>${inv.dept}</b></div>
@@ -831,7 +850,7 @@ function renderDocs() {
   $('#dutyCount').textContent = `${onDuty} of ${DOCTORS.length} on duty`;
   $('#docList').innerHTML = DOCTORS.map(d => `
     <li class="${state.calDoctor === d.name ? 'on' : ''}" data-doc="${d.name}" title="Show only ${d.name}'s appointments">
-      <span class="ini" style="background:${colorFor(d.name)}">${initials(d.name)}</span>
+      ${face(d.name, "md")}
       <span class="info"><b>${d.name}</b><small>${d.spec}</small></span>
       <span class="status ${d.status}">${STATUS_LABEL[d.status]}</span>
     </li>`).join('');
@@ -922,7 +941,7 @@ function apptModal(id) {
     <p class="m-sub">${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} · ${fmtTime(a.start)} – ${fmtTime(a.start + a.dur)}</p>
     <div class="kv">
       <div><small>Patient</small><b>${a.patient}</b></div>
-      <div><small>Doctor</small><b>${a.doctor}</b></div>
+      <div><small>Doctor</small><b class="who">${face(a.doctor)}${a.doctor}</b></div>
       <div><small>Location</small><b>${a.room}</b></div>
       <div><small>Status</small><b><span class="st ${st === 'Completed' ? 'done' : 'scheduled'}">${st}</span></b></div>
     </div>
@@ -1028,6 +1047,7 @@ $('#addDept').addEventListener('click', () => {
   toast(`${name} department added to sidebar`);
 });
 
+const DEPT_PHOTOS = { 'Emergency Ward': 'corridor', 'Intensive Care': 'icu', Radiology: 'ward' };
 function deptModal(name) {
   const r = rng([...name].reduce((a, c) => a + c.charCodeAt(0), 0));
   const beds = 30 + Math.floor(r() * 50), occ = Math.floor(beds * (.6 + r() * .35));
@@ -1036,6 +1056,7 @@ function deptModal(name) {
     : name === 'Intensive Care' ? ['goIcu', 'Show ICU Occupancy']
     : ['goCalendar', 'View Doctor Schedule'];
   openModal(`
+    <img class="m-banner" src="img/scenes/${DEPT_PHOTOS[name] || "ward"}.jpg" alt="${name}" />
     <h3>${name}</h3>
     <p class="m-sub">Live department summary · Head: ${head}</p>
     <div class="kv">
@@ -1129,7 +1150,7 @@ function openMenu(anchor, html) {
   anchor.classList.add('open');
   const r = anchor.getBoundingClientRect();
   dd.style.top = r.bottom + window.scrollY + 8 + 'px';
-  dd.style.left = Math.max(12, Math.min(r.left + window.scrollX, window.innerWidth - dd.offsetWidth - 12)) + 'px';
+  dd.style.left = Math.max(12, Math.min(r.left + window.scrollX, document.documentElement.clientWidth - dd.offsetWidth - 12)) + 'px';
   requestAnimationFrame(() => dd.classList.add('open'));
 }
 function closeMenu() {
@@ -1187,15 +1208,13 @@ function updateBadge() {
   b.textContent = n;
   b.classList.toggle('hide', n === 0);
 }
-function renderNotifs() {
-  dd.innerHTML = '<div class="dd-title">NOTIFICATIONS</div>' + state.notifs.map((n, i) => `
-    <div class="notif ${n.unread ? 'unread' : ''}" data-n="${i}"><i style="background:${n.bg};color:${n.fg}"><svg><use href="#${n.icon}"/></svg></i>
+const notifsHTML = () => '<div class="dd-title">NOTIFICATIONS</div>' + state.notifs.map((n, i) => `
+    <div class="notif ${n.unread ? 'unread' : ''}" data-n="${i}">${n.photo ? face(n.photo, "md") : `<i style="background:${n.bg};color:${n.fg}"><svg><use href="#${n.icon}"/></svg></i>`}
     <div><b>${n.t}</b><small>${n.s}</small></div></div>`).join('') +
     `<div class="dd-foot"><span class="muted">${state.notifs.filter(x => x.unread).length} unread</span><button data-markall>Mark all as read</button></div>`;
-}
+function renderNotifs() { dd.innerHTML = notifsHTML(); }
 $('#bellBtn').addEventListener('click', e => {
-  openMenu(e.currentTarget, '');
-  renderNotifs();
+  openMenu(e.currentTarget, notifsHTML());
   dd.onclick = ev => {
     if (ev.target.closest('[data-markall]')) {
       state.notifs.forEach(n => (n.unread = false));
@@ -1409,7 +1428,7 @@ const ACTIONS = {
       o = document.createElement('div');
       o.id = 'signout';
       o.className = 'signout';
-      o.innerHTML = `<div class="modal-card"><div class="big-check"><svg><use href="#i-check"/></svg></div>
+      o.innerHTML = `<div class="modal-card">${face("Dr. Hira Malik", "xl center-ph")}
         <h3>You've been signed out</h3><p class="m-sub">Your session has ended securely.</p>
         <div class="m-actions"><button class="join" id="signInBtn">Sign in as Dr. Hira Malik <span><svg><use href="#i-up-right"/></svg></span></button></div></div>`;
       document.body.appendChild(o);
@@ -1514,7 +1533,7 @@ $('#promoCard').addEventListener('click', () => {
 
 function profileModal() {
   openModal(`
-    <div class="who" style="gap:14px;margin-bottom:6px"><span class="avatar" style="width:56px;height:56px"><svg style="width:56px;height:58px"><use href="#doctor"/></svg></span>
+    <div class="who" style="gap:14px;margin-bottom:6px">${face("Dr. Hira Malik", "xl")}
     <div><h3 style="margin:0">Dr. Hira Malik</h3><p class="m-sub" style="margin:0">Consultant Cardiologist</p></div></div>
     <div class="kv">
       <div><small>Department</small><b>Cardiology</b></div>
@@ -1590,6 +1609,7 @@ const store = {
 
 function caseStudyModal() {
   openModal(`
+    <img class="m-banner" src="img/scenes/ward.jpg" alt="Hospital ward" />
     <span class="cs-eyebrow"><svg><use href="#i-lock"/></svg>PORTFOLIO CASE STUDY</span>
     <h3>Medora — Hospital Management Dashboard</h3>
     <p class="m-sub">Designed and developed by Malik Fahad Awan for a private healthcare client.
