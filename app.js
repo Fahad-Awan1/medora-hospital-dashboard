@@ -157,7 +157,7 @@ const REVENUE = {
 };
 const CLAIMS = [['Approved', 412, '#1e6bff'], ['Pending', 48, '#a9c9ff'], ['Rejected', 14, '#1b1c21']];
 const INSURERS = [['State Life', 128, 14, 4], ['Jubilee Health', 96, 11, 3], ['Adamjee Insurance', 74, 9, 2], ['EFU Health', 62, 8, 3], ['Sehat Card', 52, 6, 2]];
-const PAYMENTS = [['Insurance', 58, '#1e6bff'], ['Card', 24, '#173a9e'], ['Cash', 12, '#1b1c21'], ['Mobile Wallet', 6, '#a9c9ff']];
+const PAYMENTS = [['Insurance', 58, '#1e6bff'], ['Card', 24, '#173a9e'], ['Cash', 12, '#1b1c21'], ['JazzCash / Easypaisa', 6, '#a9c9ff']];
 const INVOICES = [
   { id: 'INV-24081', patient: 'Ayesha Khan',  dept: 'Cardiology',  date: '22 Oct 2026', amount: 118500, status: 'Paid',    payer: 'State Life' },
   { id: 'INV-24080', patient: 'Bilal Ahmed',  dept: 'Orthopedics', date: '22 Oct 2026', amount: 356000, status: 'Pending', payer: 'Jubilee Health' },
@@ -177,14 +177,14 @@ const DISPENSE = {
   rows: [[42, 118, 96, 131, 104, 122, 58], [88, 164, 152, 171, 149, 160, 92], [21, 64, 71, 58, 69, 62, 26], [12, 38, 41, 35, 44, 39, 15]],
 };
 const MEDS = [
-  { name: 'Amoxicillin 500mg',  form: 'Capsule',  cat: 'Antibiotics', stock: 1240, reorder: 400,  expiry: 'Mar 2027', supplier: 'GSK Pakistan' },
+  { name: 'Amoxicillin 500mg',  form: 'Capsule',  cat: 'Antibiotics', stock: 1240, reorder: 400,  expiry: 'Mar 2027', supplier: 'Ferozsons Laboratories' },
   { name: 'Paracetamol 500mg',  form: 'Tablet',   cat: 'Analgesics',  stock: 3820, reorder: 1000, expiry: 'Jan 2028', supplier: 'Getz Pharma' },
-  { name: 'Atorvastatin 20mg',  form: 'Tablet',   cat: 'Cardiac',     stock: 310,  reorder: 500,  expiry: 'Aug 2027', supplier: 'Searle' },
-  { name: 'Insulin Glargine',   form: 'Pen',      cat: 'Endocrine',   stock: 64,   reorder: 150,  expiry: 'Nov 2026', supplier: 'Sanofi' },
+  { name: 'Atorvastatin 20mg',  form: 'Tablet',   cat: 'Cardiac',     stock: 310,  reorder: 500,  expiry: 'Aug 2027', supplier: 'Searle Pakistan' },
+  { name: 'Insulin Glargine',   form: 'Pen',      cat: 'Endocrine',   stock: 64,   reorder: 150,  expiry: 'Nov 2026', supplier: 'Highnoon Laboratories' },
   { name: 'Metformin 500mg',    form: 'Tablet',   cat: 'Endocrine',   stock: 2150, reorder: 600,  expiry: 'Jun 2028', supplier: 'Martin Dow' },
-  { name: 'Ceftriaxone 1g',     form: 'Injection', cat: 'Antibiotics', stock: 180, reorder: 250,  expiry: 'Nov 2026', supplier: 'Abbott' },
+  { name: 'Ceftriaxone 1g',     form: 'Injection', cat: 'Antibiotics', stock: 180, reorder: 250,  expiry: 'Nov 2026', supplier: 'Sami Pharmaceuticals' },
   { name: 'Omeprazole 20mg',    form: 'Capsule',  cat: 'Gastro',      stock: 1460, reorder: 400,  expiry: 'Nov 2026', supplier: 'Getz Pharma' },
-  { name: 'Salbutamol Inhaler', form: 'Inhaler',  cat: 'Respiratory', stock: 42,   reorder: 120,  expiry: 'Feb 2027', supplier: 'GSK Pakistan' },
+  { name: 'Salbutamol Inhaler', form: 'Inhaler',  cat: 'Respiratory', stock: 42,   reorder: 120,  expiry: 'Feb 2027', supplier: 'Ferozsons Laboratories' },
 ];
 const EXPIRING = [
   { name: 'Amoxicillin 500mg', batch: 'A-2291',  days: 6,  qty: 240 },
@@ -1491,7 +1491,7 @@ $('#joinBtn').addEventListener('click', () => {
     </div>
     <form data-form="apply" novalidate>
       <div class="field"><label>Full name</label><input name="name" value="Dr. Hira Malik"/><span class="msg"></span></div>
-      <div class="field"><label>Email</label><input name="email" type="email" value="hira.malik@medora.health"/><span class="msg"></span></div>
+      <div class="field"><label>Email</label><input name="email" type="email" value="hira.malik@medora.pk"/><span class="msg"></span></div>
       <div class="field"><label>Research track</label><select name="area"><option>Cardiology</option><option>Neurology</option><option>Pediatrics</option><option>Public Health</option></select></div>
       <div class="m-actions"><button class="join" type="submit">Apply Now <span><svg><use href="#i-up-right"/></svg></span></button></div>
     </form>`);
@@ -1519,7 +1519,7 @@ function profileModal() {
     <div class="kv">
       <div><small>Department</small><b>Cardiology</b></div>
       <div><small>Employee ID</small><b>MED-0412</b></div>
-      <div><small>Email</small><b>hira.malik@medora.health</b></div>
+      <div><small>Email</small><b>hira.malik@medora.pk</b></div>
       <div><small>Phone</small><b>+92 300 1234567</b></div>
       <div><small>Shift</small><b>08:00 – 17:00</b></div>
       <div><small>Patients this week</small><b>${Object.values(state.weekAppts).filter(a => a.doctor === 'Dr. Hira Malik').length || 18}</b></div>
