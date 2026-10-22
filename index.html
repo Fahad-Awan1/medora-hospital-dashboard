@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medora Hospital Dashboard · Case Study</title>
+  <meta name="description" content="Hospital management dashboard designed and developed for a private healthcare client. Portfolio version with dummy data — real client data is confidential." />
+  <meta name="author" content="Malik Fahad Awan" />
+  <meta name="theme-color" content="#1e6bff" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Medora — Hospital Dashboard | Case Study by Malik Fahad Awan" />
+  <meta property="og:description" content="Interactive hospital dashboard built for a private healthcare client. Design and interactions are as delivered; all data shown is dummy for confidentiality." />
+  <meta property="og:image" content="og-image.png" />
+  <meta property="og:image:width" content="1440" />
+  <meta property="og:image:height" content="756" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234f8dff'/%3E%3Cstop offset='1' stop-color='%231340c4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1' y='1' width='30' height='30' rx='9' fill='url(%23g)'/%3E%3Cpath d='M13 7.5h6a1 1 0 0 1 1 1V12h3.5a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H20v3.5a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V20H8.5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1H12V8.5a1 1 0 0 1 1-1Z' fill='%23fff'/%3E%3Cpath d='M8.5 16h3.3l1.5-2.8 2.3 5.6 2-4.2 1.2 1.4h4.7' fill='none' stroke='%231E6BFF' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="screens.css" />
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-down-left" viewBox="0 0 24 24"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-export" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8M16 17H8M10 9H8"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 13h2l2-4 2 7 2-3h2"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></symbol>
+    <symbol id="i-cross" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a1b20"/><stop offset=".45" stop-color="#6b6f7d"/><stop offset=".6" stop-color="#2a2c33"/><stop offset="1" stop-color="#0e0f12"/>
+    </linearGradient>
+    <linearGradient id="rg2" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3d46"/><stop offset=".5" stop-color="#16171b"/><stop offset="1" stop-color="#2d3038"/>
+    </linearGradient>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f8dff"/><stop offset="1" stop-color="#1340c4"/>
+    </linearGradient>
+    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e6bff" stop-opacity=".28"/><stop offset="1" stop-color="#1e6bff" stop-opacity="0"/>
+    </linearGradient>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-pill" viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9Z"/></symbol>
+
+    <!-- Doctor illustration, reused for avatar + promo card -->
+    <symbol id="doctor" viewBox="0 0 100 110">
+      <path d="M33 44c-4 16 0 26 6 28l2-22Z" fill="#2b1d18"/>
+      <path d="M67 44c4 16 0 26-6 28l-2-22Z" fill="#2b1d18"/>
+      <path d="M8 110c2-28 20-40 42-40s40 12 42 40Z" fill="#fff"/>
+      <path d="M40 71l10 22 10-22Z" fill="#cfe0ff"/>
+      <path d="M38 71l12 30M62 71L50 101" stroke="#e3e9f5" stroke-width="2"/>
+      <rect x="44" y="56" width="12" height="16" rx="5" fill="#eebd98"/>
+      <ellipse cx="50" cy="43" rx="15.5" ry="17.5" fill="#f6cfae"/>
+      <path d="M33.5 44C31 24 45 19 52 21c13 1 18 12 15 25-3-9-10-14-18-14-7 1-12 5-15.5 12Z" fill="#2b1d18"/>
+      <circle cx="44" cy="45" r="1.6" fill="#2b1d18"/>
+      <circle cx="56" cy="45" r="1.6" fill="#2b1d18"/>
+      <path d="M45 52q5 4 10 0" stroke="#c2775a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <path d="M41 74c-3 14 3 22 9 22s11-7 9-22" stroke="#1e3a8a" stroke-width="2.2" fill="none"/>
+      <circle cx="50" cy="97" r="3.2" fill="#1e3a8a"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Portfolio disclaimer -->
+<div class="case-bar" id="caseBar">
+  <span class="cb-ic"><svg><use href="#i-lock"/></svg></span>
+  <p><b>Portfolio case study</b> — built for a private healthcare client. All data shown here is <b>dummy data</b>; the real client data is confidential.</p>
+  <button class="cb-link" id="caseOpen">About this project</button>
+  <button class="cb-x" id="caseClose" aria-label="Hide notice"><svg><use href="#i-x"/></svg></button>
+</div>
+
+<div class="app" id="app">
+
+  <!-- ===== Top bar ===== -->
+  <header class="topbar reveal" style="--d:0">
+    <a class="brand" href="#dashboard" aria-label="Medora home">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#logoGrad)"/>
+        <path d="M13 7.5h6a1 1 0 0 1 1 1V12h3.5a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H20v3.5a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V20H8.5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1H12V8.5a1 1 0 0 1 1-1Z" fill="#fff"/>
+        <path class="logo-ecg" d="M8.5 16h3.3l1.5-2.8 2.3 5.6 2-4.2 1.2 1.4h4.7" fill="none" stroke="#1E6BFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-text">Medora<small>Health</small></span>
+    </a>
+
+    <nav class="tabs" id="tabs">
+      <span class="tab-indicator" id="tabIndicator"></span>
+      <button class="tab active" data-screen="dashboard">Dashboard</button>
+      <button class="tab" data-screen="analytics">Analytics</button>
+      <button class="tab" data-screen="billing">Billing</button>
+      <button class="tab" data-screen="pharmacy">Pharmacy</button>
+      <button class="tab" data-screen="calendar">Calendar</button>
+    </nav>
+
+    <div class="top-actions">
+      <button class="icon-btn spin-hover" id="settingsBtn" aria-label="Settings"><svg><use href="#i-settings"/></svg></button>
+      <button class="icon-btn" id="bellBtn" aria-label="Notifications">
+        <svg class="bell"><use href="#i-bell"/></svg>
+        <span class="badge" id="bellBadge">3</span>
+      </button>
+      <button class="profile" id="profileBtn">
+        <span class="avatar"><svg><use href="#doctor"/></svg></span>
+        <span class="profile-text">
+          <strong>Dr. Hira Malik</strong>
+          <small>hira.malik@medora.health</small>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+      <div class="reveal" style="--d:1">
+        <h1 class="welcome">Welcome<br/>Back, Dr. Hira!</h1>
+        <p class="muted small">Current summary hospital report</p>
+      </div>
+
+      <div class="side-group reveal" style="--d:2">
+        <div class="side-label">HOME</div>
+        <button class="side-main" id="overviewToggle" aria-expanded="true">
+          <svg><use href="#i-box"/></svg><span>Overview</span><svg class="chev"><use href="#i-chev"/></svg>
+        </button>
+        <div class="submenu open" id="submenu">
+          <div class="submenu-inner">
+            <button class="side-item active" data-go="dashboard"><svg><use href="#i-file"/></svg>Patient Records</button>
+            <button class="side-item" data-go="analytics"><svg><use href="#i-activity"/></svg>Clinical Forecast</button>
+            <button class="side-item" data-go="calendar"><svg><use href="#i-user"/></svg>Staff Accounts</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-group reveal" style="--d:3">
+        <div class="side-label row">DEPARTMENTS <button class="mini-dot" id="addDept" aria-label="Add department"><svg><use href="#i-plus"/></svg></button></div>
+        <div id="deptList">
+          <button class="side-item"><svg><use href="#i-heart"/></svg>Emergency Ward</button>
+          <button class="side-item"><svg><use href="#i-cross"/></svg>Intensive Care</button>
+        </div>
+      </div>
+
+      <div class="promo reveal" style="--d:4" id="promoCard">
+        <span class="promo-ic"><svg><use href="#i-sparkle"/></svg></span>
+        <div class="promo-text">
+          <strong>Unlock full<br/>version</strong>
+          <small>20+ clinical metrics</small>
+        </div>
+        <svg class="promo-doc"><use href="#doctor"/></svg>
+        <span class="promo-shine"></span>
+      </div>
+    </aside>
+
+    <!-- ===== Main ===== -->
+    <main class="main">
+      <div class="main-head reveal" style="--d:1">
+        <div>
+          <h2 class="page-title" id="pageTitle">Hospital Overview</h2>
+          <div class="crumbs"><span id="crumbA">Overview</span> <span>›</span> <span id="crumbB">All Reports</span> <span class="live"><i></i>Live</span> <span class="demo-chip" title="All figures are dummy data for portfolio purposes">Dummy data</span></div>
+        </div>
+        <div class="head-actions">
+          <button class="pill" data-dd="view"><span>Default View</span></button>
+          <button class="circle" data-dd="view" aria-label="Change view"><svg><use href="#i-chev"/></svg></button>
+          <button class="pill" data-dd="export">Export</button>
+          <button class="circle" data-dd="export" aria-label="Export"><svg><use href="#i-export"/></svg></button>
+          <button class="pill" data-dd="filter"><span>Filter</span></button>
+          <button class="circle" data-dd="filter" aria-label="Filter"><svg><use href="#i-sliders"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== Screen: Dashboard ===== -->
+      <section class="screen active" data-screen="dashboard">
+      <!-- Row 1 -->
+      <section class="row1">
+        <article class="card admissions stagger" style="--d:2">
+          <div class="card-head">
+            <h3>Patient Admissions</h3>
+            <div class="head-actions">
+              <button class="pill sm" data-dd="period"><span>Weekly</span><svg><use href="#i-chev"/></svg></button>
+              <button class="circle sm" data-expand="admissions" aria-label="Admissions details"><svg><use href="#i-up-right"/></svg></button>
+            </div>
+          </div>
+          <div class="adm-top">
+            <div class="big"><span id="admTotal">0</span><small> admitted</small></div>
+            <ul class="legend grid2">
+              <li><i class="c0"></i>Low</li><li><i class="c1"></i>Moderate</li>
+              <li><i class="c2"></i>High</li><li><i class="c3"></i>Critical</li>
+            </ul>
+          </div>
+          <div class="dots" id="dots"></div>
+        </article>
+
+        <div class="row1-right">
+          <article class="card dark stagger" style="--d:3">
+            <svg class="ribbon" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <g class="ribbon-a"><path d="M120 -20 C190 40 210 90 300 110 C360 124 400 90 430 60 L430 -20 Z" fill="url(#rg1)"/></g>
+              <g class="ribbon-b"><path d="M160 210 C220 150 260 120 330 140 C380 154 400 190 420 210 Z" fill="url(#rg2)"/></g>
+              <path class="ecg" d="M0 150 H120 l10 -18 12 34 12 -52 12 36 h40 l8 -10 8 10 H400" fill="none" stroke="#1E6BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="dark-content">
+              <h3>Join Our Medical<br/>Research Program</h3>
+              <div class="dark-foot">
+                <span class="tag"><b>+15%</b> grant for staff</span>
+                <button class="join" id="joinBtn">Join Program <span><svg><use href="#i-up-right"/></svg></span></button>
+              </div>
+            </div>
+          </article>
+
+          <div class="mini-grid">
+            <article class="card today stagger" style="--d:4">
+              <div class="today-head">
+                <button class="circle sm swap" id="todaySwap" aria-label="Switch metric"><svg><use href="#i-chev"/></svg></button>
+                <span class="small-label" id="todayLabel">Today<br/>Revenue</span>
+              </div>
+              <div class="today-val" id="todayVal">PKR 0</div>
+              <div class="today-foot">
+                <span class="trend up" id="todayTrend">12% <svg><use href="#i-info"/></svg></span>
+                <span class="spark" id="spark"></span>
+              </div>
+            </article>
+
+            <article class="card report stagger" style="--d:5" id="reportCard">
+              <div class="report-top">
+                <button class="circle dk" id="reportClose" aria-label="Dismiss"><svg><use href="#i-x"/></svg></button>
+                <div class="pair">
+                  <button class="circle wh" id="reportPrint" aria-label="Print report"><svg><use href="#i-printer"/></svg></button>
+                  <button class="circle wh" id="reportOpen" aria-label="Open report"><svg><use href="#i-up-right"/></svg></button>
+                </div>
+              </div>
+              <div>
+                <span class="micro-pill">Track and Print Report</span>
+                <h4>Medical Report</h4>
+              </div>
+              <div class="progress" id="reportProgress"><i></i></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row 2 -->
+      <section class="row2">
+        <article class="card sources stagger" style="--d:5">
+          <div class="card-head">
+            <h3>Patient Sources</h3>
+            <div class="head-actions">
+              <button class="pill sm" data-dd="sort"><span>Sort by Month</span><svg><use href="#i-chev"/></svg></button>
+              <button class="pill sm" data-dd="sources"><span>All Sources</span></button>
+              <button class="circle sm" data-dd="more" aria-label="More"><svg><use href="#i-more"/></svg></button>
+            </div>
+          </div>
+          <div class="sources-body">
+            <div class="src-stats">
+              <span class="dark-pill" id="rangePill">30 Days</span>
+              <div class="big" id="visitsTotal">0</div>
+              <p class="muted small">Patient visits<br/>in a selected period</p>
+              <ul class="legend">
+                <li><i class="b0"></i>Walk-in</li><li><i class="b1"></i>Referral</li>
+                <li><i class="b2"></i>Online</li><li><i class="b3"></i>Emergency</li>
+              </ul>
+            </div>
+            <div class="chart" id="chart">
+              <div class="growth">
+                <strong id="growth">+0%</strong>
+                <small>better than last month</small>
+              </div>
+              <span class="dash-line" id="dashLine"></span>
+              <div class="bars" id="bars"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card occupancy stagger" style="--d:6">
+          <div class="card-head">
+            <h3>Bed Occupancy</h3>
+            <button class="circle sm" data-expand="occupancy" aria-label="Occupancy details"><svg><use href="#i-up-right"/></svg></button>
+          </div>
+          <div class="occ-legend">
+            <ul class="legend">
+              <li><i class="b3"></i>Total Beds</li>
+              <li><i class="b2"></i>Occupied Today</li>
+            </ul>
+            <button class="ghost" data-dd="occ"><span>For Week</span><svg><use href="#i-chev"/></svg></button>
+          </div>
+          <div class="gauge-wrap">
+            <svg class="gauge" id="gauge" viewBox="0 0 200 112"></svg>
+            <div class="gauge-center">
+              <strong id="occVal">0%</strong>
+              <small id="occSub">412 / 500 beds</small>
+            </div>
+          </div>
+          <div class="occ-foot">
+            <span class="muted tiny" id="occNote">ICU is 4% busier than last week</span>
+            <label class="switch" title="ICU only">
+              <input type="checkbox" id="icuToggle" />
+              <span></span>
+            </label>
+          </div>
+        </article>
+      </section>
+      </section>
+
+      <!-- ===== Screen: Analytics ===== -->
+      <section class="screen" data-screen="analytics">
+        <div class="kpi-row" id="aKpis"></div>
+
+        <div class="row-split">
+          <article class="card stagger" style="--d:4">
+            <div class="card-head">
+              <h3>Admissions vs Discharges</h3>
+              <div class="head-actions">
+                <button class="pill sm" data-dd="aRange"><span>Last 12 Months</span><svg><use href="#i-chev"/></svg></button>
+                <button class="circle sm" data-expand="trend" aria-label="Trend details"><svg><use href="#i-up-right"/></svg></button>
+              </div>
+            </div>
+            <div class="line-top">
+              <ul class="legend">
+                <li><i class="b2"></i>Admissions</li>
+                <li><i class="b0"></i>Discharges</li>
+              </ul>
+              <span class="muted tiny">Net flow <b class="ink" id="netFlow">+0</b> patients</span>
+            </div>
+            <svg class="line-chart" id="lineChart" viewBox="0 0 640 230"></svg>
+          </article>
+
+          <article class="card stagger" style="--d:5">
+            <div class="card-head">
+              <h3>Patients by Gender</h3>
+              <button class="circle sm" data-expand="gender" aria-label="Gender details"><svg><use href="#i-up-right"/></svg></button>
+            </div>
+            <div class="donut-wrap">
+              <svg class="donut" id="donut" viewBox="0 0 120 120"></svg>
+              <div class="donut-center"><strong id="donutTotal">0</strong><small>total patients</small></div>
+            </div>
+            <ul class="donut-legend" id="donutLegend"></ul>
+          </article>
+        </div>
+
+        <div class="row-half">
+          <article class="card stagger" style="--d:6">
+            <div class="card-head">
+              <h3>Age Groups</h3>
+              <span class="muted tiny">Admitted patients</span>
+            </div>
+            <div class="hbars" id="ageBars"></div>
+          </article>
+          <article class="card stagger" style="--d:7">
+            <div class="card-head">
+              <h3>Top Diagnoses</h3>
+              <span class="muted tiny">This month</span>
+            </div>
+            <ul class="diag" id="diagList"></ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== Screen: Billing ===== -->
+      <section class="screen" data-screen="billing">
+        <div class="row-split">
+          <article class="card stagger" style="--d:2">
+            <div class="card-head">
+              <h3>Revenue Overview</h3>
+              <div class="head-actions">
+                <button class="pill sm" data-dd="billYear"><span>2026</span><svg><use href="#i-chev"/></svg></button>
+                <button class="circle sm" data-expand="revenue" aria-label="Revenue details"><svg><use href="#i-up-right"/></svg></button>
+              </div>
+            </div>
+            <div class="rev-top">
+              <div>
+                <div class="big" id="revTotal">PKR 0</div>
+                <p class="muted small" id="revSub">collected year to date</p>
+              </div>
+              <span class="trend-chip up" id="revTrend">+14.2% vs last year</span>
+            </div>
+            <div class="vbars" id="revBars"></div>
+          </article>
+
+          <article class="card stagger" style="--d:3">
+            <div class="card-head">
+              <h3>Insurance Claims</h3>
+              <button class="circle sm" data-expand="claims" aria-label="Claims details"><svg><use href="#i-up-right"/></svg></button>
+            </div>
+            <div class="gauge-wrap">
+              <svg class="gauge" id="claimsGauge" viewBox="0 0 200 112"></svg>
+              <div class="gauge-center">
+                <strong id="claimsVal">0%</strong>
+                <small>approval rate</small>
+              </div>
+            </div>
+            <ul class="claim-list" id="claimList"></ul>
+          </article>
+        </div>
+
+        <div class="row-split">
+          <article class="card stagger" style="--d:4">
+            <div class="card-head">
+              <h3>Recent Invoices</h3>
+              <label class="search"><svg><use href="#i-search"/></svg><input id="invSearch" placeholder="Search patient or invoice" /></label>
+            </div>
+            <div class="tbl-wrap">
+              <table class="tbl">
+                <thead><tr><th>Invoice</th><th>Patient</th><th>Department</th><th>Date</th><th class="r">Amount</th><th>Status</th></tr></thead>
+                <tbody id="invBody"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <div class="stack">
+            <article class="card dark dues stagger" style="--d:5">
+              <svg class="ribbon" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <g class="ribbon-a"><path d="M180 -20 C230 40 250 90 330 110 C380 124 400 90 430 60 L430 -20 Z" fill="url(#rg1)"/></g>
+              </svg>
+              <div class="dark-content">
+                <div>
+                  <span class="small-label light">Outstanding Dues</span>
+                  <div class="big" id="duesVal">PKR 0</div>
+                  <span class="tag"><b>34</b> unpaid invoices · oldest 62 days</span>
+                </div>
+                <button class="join" id="remindBtn">Send Reminders <span><svg><use href="#i-send"/></svg></span></button>
+              </div>
+            </article>
+
+            <article class="card stagger" style="--d:6">
+              <div class="card-head"><h3>Payment Methods</h3></div>
+              <div class="stackbar" id="payBar"></div>
+              <ul class="pay-list" id="payList"></ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Screen: Pharmacy ===== -->
+      <section class="screen" data-screen="pharmacy">
+        <div class="kpi-row" id="pKpis"></div>
+
+        <div class="row-split">
+          <article class="card stagger" style="--d:4">
+            <div class="card-head">
+              <h3>Dispensing Activity</h3>
+              <div class="head-actions">
+                <ul class="legend">
+                  <li><i class="c0"></i>Low</li><li><i class="c1"></i>Moderate</li><li><i class="c2"></i>High</li><li><i class="c3"></i>Peak</li>
+                </ul>
+                <button class="circle sm" data-expand="dispensing" aria-label="Dispensing details"><svg><use href="#i-up-right"/></svg></button>
+              </div>
+            </div>
+            <div class="dots" id="pMatrix"></div>
+          </article>
+
+          <article class="card report expiry stagger" style="--d:5">
+            <div class="report-top">
+              <span class="circle dk"><svg><use href="#i-alert"/></svg></span>
+              <span class="micro-pill">Next 30 days</span>
+            </div>
+            <div>
+              <h4>Expiry Alert</h4>
+              <p class="exp-sub"><b id="expCount">0</b> batches expiring soon</p>
+            </div>
+            <ul class="exp-list" id="expList"></ul>
+            <button class="join" id="reviewBtn">Review Batches <span><svg><use href="#i-up-right"/></svg></span></button>
+          </article>
+        </div>
+
+        <div class="row-split">
+          <article class="card stagger" style="--d:6">
+            <div class="card-head">
+              <h3>Medicine Inventory</h3>
+              <label class="search"><svg><use href="#i-search"/></svg><input id="medSearch" placeholder="Search medicine" /></label>
+            </div>
+            <div class="tbl-wrap">
+              <table class="tbl">
+                <thead><tr><th>Medicine</th><th>Category</th><th>Stock</th><th>Expiry</th><th>Status</th><th></th></tr></thead>
+                <tbody id="medBody"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="card stagger" style="--d:7">
+            <div class="card-head">
+              <h3>Stock by Category</h3>
+              <span class="muted tiny">Items in store</span>
+            </div>
+            <div class="vbars tall" id="catBars"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== Screen: Calendar ===== -->
+      <section class="screen" data-screen="calendar">
+        <div class="cal-layout">
+          <div class="stack">
+            <article class="card stagger" style="--d:2">
+              <div class="card-head">
+                <h3 id="monthLabel">Month</h3>
+                <div class="head-actions">
+                  <button class="circle sm" id="monthPrev" aria-label="Previous month"><svg><use href="#i-left"/></svg></button>
+                  <button class="circle sm" id="monthNext" aria-label="Next month"><svg><use href="#i-right"/></svg></button>
+                </div>
+              </div>
+              <div class="mini-cal" id="miniCal"></div>
+            </article>
+
+            <article class="card stagger" style="--d:3">
+              <div class="card-head">
+                <h3>Doctors on Duty</h3>
+                <span class="muted tiny" id="dutyCount"></span>
+              </div>
+              <ul class="docs" id="docList"></ul>
+            </article>
+          </div>
+
+          <article class="card schedule stagger" style="--d:4">
+            <div class="card-head">
+              <div>
+                <h3>Weekly Schedule</h3>
+                <span class="muted tiny" id="weekLabel"></span>
+              </div>
+              <div class="head-actions">
+                <button class="circle sm" id="weekPrev" aria-label="Previous week"><svg><use href="#i-left"/></svg></button>
+                <button class="pill sm" id="weekToday">Today</button>
+                <button class="pill sm book" id="bookBtn"><svg><use href="#i-plus"/></svg>Book</button>
+                <button class="circle sm" id="weekNext" aria-label="Next week"><svg><use href="#i-right"/></svg></button>
+              </div>
+            </div>
+            <div class="sched-stats" id="schedStats"></div>
+            <div class="sched-wrap"><div class="sched" id="sched"></div></div>
+            <ul class="legend sched-legend">
+              <li><i class="b2"></i>Consultation</li><li><i class="b0"></i>Surgery</li>
+              <li><i class="b1"></i>Check-up</li><li><i class="b3"></i>Follow-up</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<footer class="credit">
+  Designed &amp; developed by <b>Malik Fahad Awan</b> · Client name and real data withheld under confidentiality · All figures are dummy data
+</footer>
+
+<!-- Floating layers -->
+<div class="dropdown" id="dropdown" role="menu"></div>
+<div class="tooltip" id="tooltip"></div>
+<div class="toasts" id="toasts"></div>
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-card">
+    <button class="circle sm modal-x" id="modalClose" aria-label="Close"><svg><use href="#i-x"/></svg></button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
